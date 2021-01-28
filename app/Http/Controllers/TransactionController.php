@@ -36,9 +36,7 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function create(Request $request) {
-        
-
+    public function create(Request $request) { 
         $rules = [
             'uuid' => 'required|unique:transactions|max:255',
             'name' => 'required',
@@ -47,7 +45,6 @@ class TransactionController extends Controller
             'address' => 'required',
             'transaction_total'=> 'required|integer',
             'transaction_status' => 'required'
-
         ];
 
 

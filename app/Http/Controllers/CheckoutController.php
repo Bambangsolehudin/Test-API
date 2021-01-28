@@ -11,7 +11,12 @@ class CheckoutController extends Controller
 {
     public function checkout(Request $request)
     {
+
+
         $data = $request->except('product_details');
+        
+
+
         $data['uuid'] = 'TRX' . mt_rand(10000,99999) . mt_rand(100,999);
 
         $transaction = Transaction::create($data);
@@ -35,4 +40,3 @@ class CheckoutController extends Controller
 
     }
 }
-

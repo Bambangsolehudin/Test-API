@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Category;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -34,16 +35,25 @@ class ProductController extends Controller
             'data' => $product
         ]);
     }
-
+// 
     public function create(Request $request) {
         
-        $this->validate($request, [
+        $rules = [
             'name' => 'required',
             'description' => 'required',
-            'price' => 'required',
-            'categories_id' => 'required',
-            'quantity' => 'required',
-        ]);
+            'price' => 'required|integer',
+            'categories_id' => 'required|integer',
+            'quantity' => 'required|integer',
+        ];
+
+        $data = $request->all();
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()
+            ], 400);
+        }
 
         $category_id = Category::find($request->categories_id);
         
@@ -54,7 +64,7 @@ class ProductController extends Controller
             ], 404);
         }
 
-        $data = $request->all();
+ 
 
         $product =  Product::create($data);
 
@@ -67,13 +77,22 @@ class ProductController extends Controller
 
     public function update(Request $request, $id) {
         
-        $this->validate($request, [
+        $rules = [
             'name' => 'required',
             'description' => 'required',
-            'price' => 'required',
-            'categories_id' => 'required',
-            'quantity' => 'required',
-        ]);
+            'price' => 'required|integer',
+            'categories_id' => 'required|integer',
+            'quantity' => 'required|integer',
+        ];
+
+        $data = $request->all();
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()
+            ], 400);
+        }
 
         $category_id = Category::find($request->categories_id);
         
@@ -93,7 +112,6 @@ class ProductController extends Controller
             ], 404);
         }
 
-        $data = $request->all();
 
         $product->update($data);
 
